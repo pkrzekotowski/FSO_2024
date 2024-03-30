@@ -26,10 +26,23 @@ const Counter = ({ counter, text }) => {
   )
 }
 
-const PositivePercentage = ({ counter, text }) => {
+const Statistics = (props) => {
+  if (props.all === 0) {
+    return (
+      <div>
+      <p>no feedback given</p>
+      </div>
+    )
+  }
+
   return (
     <div>
-      {text} {counter} %
+      <Counter counter={props.good} text={'good'} />
+      <Counter counter={props.neutral} text={'neutral'} />
+      <Counter counter={props.bad} text={'bad'} />
+      <Counter counter={props.all} text={'all'} />
+      <Counter counter={props.average} text={'average'} />
+      <Counter counter={props.positive} text={'positive'} />
     </div>
   )
 }
@@ -42,7 +55,7 @@ const App = () => {
   const [all, setAll] = useState(0)
 
   const average = ((good * 1 - bad * -1 + neutral * 0)/ all) || 0
-  const positive = ((good / all) * 100) || 0
+  const positive = ((good / all) * 100) + ' %' || 0
 
 
   const handleGoodVote = () => {
@@ -67,12 +80,14 @@ const App = () => {
       <Button onClick={handleNeutralVote} text={'neutral'}/>
       <Button onClick={handleBadVote} text={'bad'}/>
       <Header text={'statistics'} />
-      <Counter counter={good} text={'good'} />
-      <Counter counter={neutral} text={'neutral'} />
-      <Counter counter={bad} text={'bad'} />
-      <Counter counter={all} text={'all'} />
-      <Counter counter={average} text={'average'} />
-      <PositivePercentage counter={positive} text={'positive'} />
+      <Statistics
+      bad={bad}
+      good={good}
+      neutral={neutral}
+      all={all}
+      average={average}
+      positive={positive}
+      />
     </div>
   )
 }
