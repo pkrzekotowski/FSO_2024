@@ -20,9 +20,12 @@ const Button = ({ onClick, text }) => {
 
 const StatisticLine = ({ counter, text }) => {
   return (
-    <div>
-      {text} {counter}
-    </div>
+    <>
+      <tr>
+        <td>{text}</td>
+        <td>{counter}</td>
+      </tr>
+    </>
   )
 }
 
@@ -37,12 +40,15 @@ const Statistics = (props) => {
 
   return (
     <div>
-      <StatisticLine counter={props.good} text={'good'} />
-      <StatisticLine counter={props.neutral} text={'neutral'} />
-      <StatisticLine counter={props.bad} text={'bad'} />
-      <StatisticLine counter={props.all} text={'all'} />
-      <StatisticLine counter={props.average} text={'average'} />
-      <StatisticLine counter={props.positive} text={'positive'} />
+        <table>
+          <tbody>
+            <StatisticLine counter={props.neutral} text={'neutral'} />
+            <StatisticLine counter={props.bad} text={'bad'} />
+            <StatisticLine counter={props.all} text={'all'} />
+            <StatisticLine counter={props.average} text={'average'} />
+            <StatisticLine counter={props.positive} text={'positive'} />
+        </tbody>
+        </table>
     </div>
   )
 }
