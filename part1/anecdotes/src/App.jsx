@@ -18,6 +18,22 @@ const Votes = ({ votes }) => {
   )
 }
 
+const Header = ({ text }) => {
+  return (
+    <>
+     <h2>{text}</h2>
+    </>
+  )
+}
+
+const Anecdotes = ({ anecdotes }) => {
+  return (
+    <>
+     {anecdotes}
+    </>
+  )
+}
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -35,8 +51,6 @@ const App = () => {
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState(new Array(arrayLength).fill(0))
 
-  console.log(votes)
-
   const getRandomNuber = () => Math.floor(Math.random() * arrayLength)
   const handleClick = () => setSelected(getRandomNuber)
   const handleVote = () => {
@@ -47,12 +61,22 @@ const App = () => {
      })
   }
 
+  const highestVoteIndex = votes.reduce((highestIndex, vote, currentIndex) => {
+    if (vote >= votes[highestIndex]) {
+      return currentIndex;
+    }
+    return highestIndex;
+  }, 0);
+
   return (
     <div>
-      {anecdotes[selected]}
+      <Header text={'Anecdote of the day'} />
+      <Anecdotes anecdotes={anecdotes[selected]} />
       <Votes votes={votes[selected]} />
       <Button onClick={handleVote} text={'vote'} />
       <Button onClick={handleClick} text={'next anecdote'} />
+      <Header text={'Anecdote with the most votes'} />
+      <Anecdotes anecdotes={anecdotes[highestVoteIndex]} />
     </div>
   )
 }
