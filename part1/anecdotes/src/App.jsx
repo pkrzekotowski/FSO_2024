@@ -1,38 +1,20 @@
 import { useState } from 'react'
 
-const Button = ({ onClick, text }) => {
-  return (
-    <>
-      <button onClick={onClick}>
-        {text}
-      </button>
-    </>
-  )
-}
+const Header = ({ text }) => (
+  <h2>{text}</h2>
+)
 
-const Votes = ({ votes }) => {
-  return (
-    <div>
-      has {votes} votes
-    </div>
-  )
-}
+const Anecdote = ({ anecdote }) => (
+  <div>{anecdote}</div>
+)
 
-const Header = ({ text }) => {
-  return (
-    <>
-     <h2>{text}</h2>
-    </>
-  )
-}
+const Votes = ({ votes }) => (
+  <div>has {votes} votes</div>
+)
 
-const Anecdotes = ({ anecdotes }) => {
-  return (
-    <>
-     {anecdotes}
-    </>
-  )
-}
+const Button = ({ onClick, text }) => (
+  <button onClick={onClick}>{text}</button>
+)
 
 const App = () => {
   const anecdotes = [
@@ -46,37 +28,26 @@ const App = () => {
     'The only way to go fast, is to go well.'
   ]
 
-  const arrayLength = anecdotes.length
-
   const [selected, setSelected] = useState(0)
-  const [votes, setVotes] = useState(new Array(arrayLength).fill(0))
+  const [votes, setVotes] = useState(anecdotes.map(() => 0))
 
-  const getRandomNuber = () => Math.floor(Math.random() * arrayLength)
-  const handleClick = () => setSelected(getRandomNuber)
-  const handleVote = () => {
-    setVotes (() => {
-      const updatedVotes = [...votes]
-      updatedVotes[selected] += 1
-      return updatedVotes
-     })
-  }
+  const arrayLength = anecdotes.length
+  const highestVoteAnecdote = Math.max(...votes)
+  const highestIndex = votes.indexOf(highestVoteAnecdote)
 
-  const highestVoteIndex = votes.reduce((highestIndex, vote, currentIndex) => {
-    if (vote >= votes[highestIndex]) {
-      return currentIndex;
-    }
-    return highestIndex;
-  }, 0);
+  const handleClick = () => setSelected(Math.floor(Math.random() * arrayLength))
+  const handleVote = () => setVotes(votes.map((value, index) => index === selected ? value + 1 : value))
 
   return (
     <div>
-      <Header text={'Anecdote of the day'} />
-      <Anecdotes anecdotes={anecdotes[selected]} />
+      <Header text='anecdote of the day' />
+      <Anecdote anecdote={anecdotes[selected]} />
       <Votes votes={votes[selected]} />
-      <Button onClick={handleVote} text={'vote'} />
-      <Button onClick={handleClick} text={'next anecdote'} />
-      <Header text={'Anecdote with the most votes'} />
-      <Anecdotes anecdotes={anecdotes[highestVoteIndex]} />
+      <Button onClick={handleVote} text='vote' />
+      <Button onClick={handleClick} text='next anecdote' />
+      <Header text='anecdote with the most votes' />
+      <Anecdote anecdote= {anecdotes[highestIndex]} />
+      <Votes votes={votes[highestIndex]} />
     </div>
   )
 }
